@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(curl -L \"https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights/tiny_face_detector_model-weights_manifest.json\" -o public/models/tiny_face_detector_model-weights_manifest.json)",
+      "Bash(curl -L \"https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/weights/tiny_face_detector_model-shard1\" -o public/models/tiny_face_detector_model-shard1)",
+      "Bash(curl -L \"https://github.com/justadudewhohacks/face-api.js/raw/master/weights/tiny_face_detector_model-weights_manifest.json\" -o public/models/tiny_face_detector_model-weights_manifest.json)",
+      "Bash(curl -L \"https://github.com/justadudewhohacks/face-api.js/raw/master/weights/tiny_face_detector_model-shard1\" -o public/models/tiny_face_detector_model-shard1)",
+      "Bash(npx tsc *)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000)"
+    ]
+  }
+}
