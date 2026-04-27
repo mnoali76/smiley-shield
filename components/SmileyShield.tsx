@@ -3,9 +3,10 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import {
   Upload, Download, RefreshCw, Eye, EyeOff,
-  Scan, CheckCircle, AlertCircle, Loader2, Shield,
+  Scan, CheckCircle, AlertCircle, Loader2, Shield, Play,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { TutorialModal } from './TutorialModal'
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TYPES
@@ -247,6 +248,7 @@ export function SmileyShield() {
   const [hasDetected,    setHasDetected]    = useState(false)
   const [isDownloading,  setIsDownloading]  = useState(false)
   const [isDragging,     setIsDragging]     = useState(false)
+  const [tutorialOpen,   setTutorialOpen]   = useState(false)
 
   // ── Refs ────────────────────────────────────────────────────────────────
   const imageRef      = useRef<HTMLImageElement>(null)
@@ -507,6 +509,18 @@ export function SmileyShield() {
           <CheckCircle className="w-3.5 h-3.5 shrink-0" />
           <span>התמונה מעובדת בדפדפן שלך ואינה נשמרת במערכת</span>
         </div>
+
+        {/* Tutorial button — prominent */}
+        <div className="mt-5">
+          <button
+            onClick={() => setTutorialOpen(true)}
+            className="relative inline-flex items-center gap-2.5 bg-gradient-to-r from-indigo-500 to-violet-500 text-white font-semibold text-sm px-6 py-3 rounded-full shadow-lg shadow-indigo-300 hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-200"
+          >
+            <span className="absolute inset-0 rounded-full bg-indigo-400 animate-ping opacity-25 pointer-events-none" />
+            <Play className="w-4 h-4 fill-white shrink-0" />
+            מדריך שימוש — איך זה עובד?
+          </button>
+        </div>
       </header>
 
       {/* Steps */}
@@ -659,6 +673,9 @@ export function SmileyShield() {
 
         <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
       </main>
+
+      {/* Tutorial modal */}
+      <TutorialModal open={tutorialOpen} onClose={() => setTutorialOpen(false)} />
 
       {/* Footer */}
       <footer className="text-center py-6 px-4 text-sm text-gray-400 border-t border-gray-100 bg-white/40">
