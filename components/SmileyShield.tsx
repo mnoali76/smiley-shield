@@ -333,6 +333,34 @@ export function SmileyShield() {
   const toggleFace = useCallback((id: string) =>
     setFaces(p => p.map(f => f.id === id ? { ...f, covered: !f.covered } : f)), [])
 
+  const addFaceAtPosition = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!imageUrl) return
+    const target = e.target as HTMLElement
+    if (target.closest('[data-face-overlay]')) return
+    const img = imageRef.current
+    if (!img) return
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect()
+    const xPct = (e.clientX - rect.left) / rect.width * 100
+    const yPct = (e.clientY - rect.top) / rect.height * 100
+    const wPct = 10, hPct = 10
+    const nW = img.naturalWidth, nH = img.naturalHeight
+    setFaces(prev => [...prev, {
+      id: `face-manual-${Date.now()}`,
+      box: {
+        xPct: xPct - wPct / 2, yPct: yPct - hPct / 2,
+        wPct, hPct,
+        xNat: (xPct - wPct / 2) / 100 * nW,
+        yNat: (yPct - hPct / 2) / 100 * nH,
+        wNat: wPct / 100 * nW,
+        hNat: hPct / 100 * nH,
+      },
+      covered: true,
+      centerX: xPct,
+      centerY: yPct,
+      adjScale: 1,
+    }])
+  }, [imageUrl])
+
   // ── Download ─────────────────────────────────────────────────────────────
 
   const downloadImage = useCallback(async () => {
@@ -457,6 +485,7 @@ export function SmileyShield() {
 
     return (
       <div key={face.id}
+        data-face-overlay="true"
         className={`absolute select-none overflow-visible cursor-grab active:cursor-grabbing ${
           face.covered ? 'opacity-100' : 'opacity-0 hover:opacity-40'
         }`}
@@ -650,7 +679,9 @@ export function SmileyShield() {
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/80 overflow-hidden">
 
             {/* Image + overlays */}
-            <div className="relative bg-gray-950" style={{ lineHeight: 0 }}>
+            <div className="relative bg-gray-950" style={{ lineHeight: 0, cursor: imageUrl ? 'crosshair' : 'default' }}
+              onClick={addFaceAtPosition}
+            >
               <img
                 ref={imageRef}
                 src={imageUrl}
@@ -686,17 +717,18 @@ export function SmileyShield() {
             {hasDetected && faces.length === 0 && (
               <div className="px-5 py-3 bg-amber-50 border-b border-amber-100">
                 <div className="flex items-center gap-2 text-amber-700 text-sm">
-                  <AlertCircle className="w-4 h-4 shrink-0" /> לא זוהו פנים. נסה תמונה עם פנים ברורות יותר.
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>לא זוהו פנים אוטומטית. <strong>לחץ על כל פנים בתמונה</strong> כדי להוסיף כיסוי ידנית.</span>
                 </div>
               </div>
             )}
 
             {/* Verification reminder */}
-            {hasDetected && faces.length > 0 && (
+            {imageUrl && (
               <div className="px-5 py-2.5 flex items-start gap-2.5 bg-sky-50 border-b border-sky-100">
                 <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                 <p className="text-xs text-sky-700 leading-relaxed">
-                  <span className="font-semibold">כדאי לדעת:</span> הזיהוי האוטומטי לא תמיד מושלם. לפני שמורידים את התמונה, מומלץ לוודא שכל הפנים הרלוונטיות סומנו.
+                  <span className="font-semibold">לחץ על כל פנים שלא זוהתה</span> כדי להוסיף סמיילי ידנית — ניתן להזיז ולשנות גודל אחר כך.
                 </p>
               </div>
             )}
