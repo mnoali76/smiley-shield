@@ -310,7 +310,7 @@ export function SmileyShield() {
     setIsDetecting(true); setFaces([])
     try {
       const faceapi = await import('face-api.js')
-      const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.3 })
+      const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 608, scoreThreshold: 0.2 })
       const detections = await faceapi.detectAllFaces(img, options)
       const nW = img.naturalWidth, nH = img.naturalHeight
       setFaces(detections.map((det, i) => {
