@@ -743,7 +743,7 @@ export function SmileyShield() {
           {' '}— פתרונות AI קטנים לבעיות אמיתיות מהיומיום
         </p>
         <p>
-          <a href="TODO: add contact link" target="_blank" rel="noopener noreferrer"
+          <a href="mailto:noa@more-ai.co.il"
             className="text-gray-400 hover:text-indigo-500 transition-colors text-xs">
             יש לכם רעיון לכלי קטן שיכול לחסוך זמן? דברו איתי
           </a>
