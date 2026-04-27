@@ -563,11 +563,29 @@ export function SmileyShield() {
                   <svg viewBox="0 0 120 90" width="100%" preserveAspectRatio="xMidYMid meet">
                     <rect x="0" y="0" width="120" height="90" fill="#e0f2fe" />
                     <rect x="0" y="55" width="120" height="35" fill="#bbf7d0" />
+                    {/* Body */}
                     <rect x="38" y="55" width="44" height="38" rx="6" fill="#6b7280" />
-                    <circle cx="60" cy="40" r="22" fill="#fcd9bd" stroke="#d4a276" strokeWidth="1.5" />
-                    <circle cx="52" cy="35" r="3" fill="#374151" />
-                    <circle cx="68" cy="35" r="3" fill="#374151" />
-                    <path d="M 50 44 Q 60 54 70 44" stroke="#374151" strokeWidth="2" fill="none" strokeLinecap="round" />
+                    {/* Ears */}
+                    <ellipse cx="38" cy="41" rx="5" ry="6" fill="#f5c5a3" />
+                    <ellipse cx="82" cy="41" rx="5" ry="6" fill="#f5c5a3" />
+                    {/* Face */}
+                    <circle cx="60" cy="40" r="22" fill="#fcd9bd" stroke="#e8a87c" strokeWidth="1" />
+                    {/* Hair */}
+                    <path d="M 38 34 Q 40 14 60 13 Q 80 14 82 34 Q 75 22 60 21 Q 45 22 38 34Z" fill="#92400e" />
+                    {/* Eyebrows */}
+                    <path d="M 49 30 Q 53 28 57 30" stroke="#6b3a1f" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                    <path d="M 63 30 Q 67 28 71 30" stroke="#6b3a1f" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                    {/* Eyes */}
+                    <ellipse cx="53" cy="36" rx="3.5" ry="4" fill="white" />
+                    <ellipse cx="67" cy="36" rx="3.5" ry="4" fill="white" />
+                    <circle cx="54" cy="37" r="2.2" fill="#374151" />
+                    <circle cx="68" cy="37" r="2.2" fill="#374151" />
+                    <circle cx="54.8" cy="36" r="0.8" fill="white" />
+                    <circle cx="68.8" cy="36" r="0.8" fill="white" />
+                    {/* Nose */}
+                    <path d="M 59 40 Q 57 44 60 45 Q 63 44 61 40" stroke="#d4956a" strokeWidth="1" fill="none" strokeLinecap="round" />
+                    {/* Mouth */}
+                    <path d="M 53 50 Q 60 55 67 50" stroke="#c0724a" strokeWidth="1.5" fill="none" strokeLinecap="round" />
                   </svg>
                 </div>
                 <span className="text-xs text-gray-400 font-medium">לפני</span>
