@@ -494,6 +494,7 @@ export function SmileyShield() {
         onPointerDown={onDragDown}
         onPointerMove={onDragMove}
         onPointerUp={onDragUp}
+        onClick={(e) => e.stopPropagation()}
       >
         <div className="w-full h-full overflow-hidden">{content}</div>
 
@@ -754,7 +755,7 @@ export function SmileyShield() {
                 )}
               </div>
               <div className="flex flex-wrap gap-2">
-                {hasDetected && (
+                {(hasDetected || faces.some(f => f.covered)) && (
                   <Button onClick={downloadImage} disabled={isDownloading}
                     className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 rounded-xl shadow-md shadow-emerald-100 text-sm">
                     {isDownloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
