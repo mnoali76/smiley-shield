@@ -3,7 +3,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react'
 import {
   Upload, Download, RefreshCw, Eye, EyeOff,
-  Scan, CheckCircle, AlertCircle, Loader2, Shield, Play,
+  Scan, CheckCircle, AlertCircle, Loader2, Shield, Play, Info,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { TutorialModal } from './TutorialModal'
@@ -312,7 +312,6 @@ export function SmileyShield() {
       const faceapi = await import('face-api.js')
       const options = new faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.3 })
       const detections = await faceapi.detectAllFaces(img, options)
-      const dW = img.offsetWidth, dH = img.offsetHeight
       const nW = img.naturalWidth, nH = img.naturalHeight
       setFaces(detections.map((det, i) => {
         const { x, y, width: w, height: h } = det.box
@@ -505,9 +504,12 @@ export function SmileyShield() {
         <p className="text-gray-500 text-base md:text-lg max-w-lg mx-auto leading-relaxed">
           מסתירים פנים בתמונות בקלות, במהירות ובצורה בטוחה
         </p>
+        <p className="text-gray-400 text-sm mt-1.5 max-w-md mx-auto">
+          מתאים לגננות, מדריכי חוגים, מורים, ועדי הורים וצוותי חינוך שרוצים לשתף תמונות בבטחה.
+        </p>
         <div className="inline-flex items-center gap-2 mt-3 px-4 py-1.5 bg-emerald-50 border border-emerald-200 rounded-full text-emerald-700 text-xs md:text-sm">
           <CheckCircle className="w-3.5 h-3.5 shrink-0" />
-          <span>התמונה מעובדת בדפדפן שלך ואינה נשמרת במערכת</span>
+          <span>התמונה לא נשמרת ולא נשלחת אלינו — העיבוד מתבצע בדפדפן שלך בלבד</span>
         </div>
 
         {/* Tutorial button — prominent */}
@@ -518,7 +520,7 @@ export function SmileyShield() {
           >
             <span className="absolute inset-0 rounded-full bg-indigo-400 animate-ping opacity-25 pointer-events-none" />
             <Play className="w-4 h-4 fill-white shrink-0" />
-            מדריך שימוש — איך זה עובד?
+            איך משתמשים בזה?
           </button>
         </div>
       </header>
@@ -549,6 +551,49 @@ export function SmileyShield() {
           <p className="text-center text-sm font-semibold text-gray-500 mb-3">בחרו סוג כיסוי לפנים</p>
           <CoveragePicker value={coverageType} onChange={setCoverageType} />
         </div>
+
+        {/* Before / After demo */}
+        {!imageUrl && (
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-5 border border-white/80 shadow-sm">
+            <p className="text-center text-sm font-semibold text-gray-400 mb-4">כך זה נראה בפועל</p>
+            <div className="flex gap-3 justify-center">
+              {/* Before */}
+              <div className="flex-1 max-w-[160px] flex flex-col items-center gap-2">
+                <div className="w-full rounded-xl overflow-hidden border border-gray-200 bg-sky-50">
+                  <svg viewBox="0 0 120 90" width="100%" preserveAspectRatio="xMidYMid meet">
+                    <rect x="0" y="0" width="120" height="90" fill="#e0f2fe" />
+                    <rect x="0" y="55" width="120" height="35" fill="#bbf7d0" />
+                    <rect x="38" y="55" width="44" height="38" rx="6" fill="#6b7280" />
+                    <circle cx="60" cy="40" r="22" fill="#fcd9bd" stroke="#d4a276" strokeWidth="1.5" />
+                    <circle cx="52" cy="35" r="3" fill="#374151" />
+                    <circle cx="68" cy="35" r="3" fill="#374151" />
+                    <path d="M 50 44 Q 60 54 70 44" stroke="#374151" strokeWidth="2" fill="none" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <span className="text-xs text-gray-400 font-medium">לפני</span>
+              </div>
+              {/* Arrow */}
+              <div className="flex items-center text-indigo-300 text-xl font-light select-none mt-2">←</div>
+              {/* After */}
+              <div className="flex-1 max-w-[160px] flex flex-col items-center gap-2">
+                <div className="w-full rounded-xl overflow-hidden border border-indigo-100 bg-sky-50">
+                  <svg viewBox="0 0 120 90" width="100%" preserveAspectRatio="xMidYMid meet">
+                    <rect x="0" y="0" width="120" height="90" fill="#e0f2fe" />
+                    <rect x="0" y="55" width="120" height="35" fill="#bbf7d0" />
+                    <rect x="38" y="55" width="44" height="38" rx="6" fill="#6b7280" />
+                    <circle cx="60" cy="40" r="26" fill="#FFD700" stroke="#F59E0B" strokeWidth="2" />
+                    <circle cx="51" cy="34" r="4" fill="#1a1a1a" />
+                    <circle cx="69" cy="34" r="4" fill="#1a1a1a" />
+                    <ellipse cx="44" cy="43" rx="5" ry="4" fill="rgba(255,90,90,.3)" />
+                    <ellipse cx="76" cy="43" rx="5" ry="4" fill="rgba(255,90,90,.3)" />
+                    <path d="M 47 44 Q 60 57 73 44" stroke="#1a1a1a" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                  </svg>
+                </div>
+                <span className="text-xs text-indigo-500 font-semibold">אחרי ✓</span>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Upload dropzone */}
         {!imageUrl && (
@@ -628,6 +673,16 @@ export function SmileyShield() {
               </div>
             )}
 
+            {/* Verification reminder */}
+            {hasDetected && faces.length > 0 && (
+              <div className="px-5 py-2.5 flex items-start gap-2.5 bg-sky-50 border-b border-sky-100">
+                <Info className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                <p className="text-xs text-sky-700 leading-relaxed">
+                  <span className="font-semibold">כדאי לדעת:</span> הזיהוי האוטומטי לא תמיד מושלם. לפני שמורידים את התמונה, מומלץ לוודא שכל הפנים הרלוונטיות סומנו.
+                </p>
+              </div>
+            )}
+
             {/* ── Face controls ── */}
             <div className="p-4 flex flex-wrap gap-3 items-center justify-between border-b border-gray-100">
               <div className="flex flex-wrap gap-2">
@@ -678,18 +733,19 @@ export function SmileyShield() {
       <TutorialModal open={tutorialOpen} onClose={() => setTutorialOpen(false)} />
 
       {/* Footer */}
-      <footer className="text-center py-6 px-4 text-sm text-gray-400 border-t border-gray-100 bg-white/40">
+      <footer className="text-center py-6 px-4 text-sm text-gray-400 border-t border-gray-100 bg-white/40 space-y-2">
         <p>
-          נבנה על ידי{' '}
-          נעה מור |{' '}
+          נבנה על ידי נעה מור |{' '}
           <a href="https://more-ai.co.il/" target="_blank" rel="noopener noreferrer"
             className="text-indigo-600 font-semibold hover:text-indigo-800 transition-colors">
             More-AI
           </a>
-          {' – '}
-          <a href="https://more-ai.co.il/" target="_blank" rel="noopener noreferrer"
-            className="text-indigo-400 hover:text-indigo-600 underline transition-colors">
-            רוצים אפליקציה מותאמת אישית? צרו קשר
+          {' '}— פתרונות AI קטנים לבעיות אמיתיות מהיומיום
+        </p>
+        <p>
+          <a href="TODO: add contact link" target="_blank" rel="noopener noreferrer"
+            className="text-gray-400 hover:text-indigo-500 transition-colors text-xs">
+            יש לכם רעיון לכלי קטן שיכול לחסוך זמן? דברו איתי
           </a>
         </p>
       </footer>
