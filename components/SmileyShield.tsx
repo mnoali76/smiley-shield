@@ -486,6 +486,7 @@ export function SmileyShield() {
     return (
       <div key={face.id}
         data-face-overlay="true"
+        draggable="false"
         className={`absolute select-none overflow-visible cursor-grab active:cursor-grabbing ${
           face.covered ? 'opacity-100' : 'opacity-0 hover:opacity-40'
         }`}
@@ -687,7 +688,9 @@ export function SmileyShield() {
                 ref={imageRef}
                 src={imageUrl}
                 alt="Uploaded"
-                className="w-full h-auto block"
+                draggable="false"
+                className="w-full h-auto block select-none"
+                onDragStart={(e) => e.preventDefault()}
               />
 
               {faces.map(renderOverlay)}
